@@ -1,0 +1,19 @@
+//| mill-version: 1.0.0-RC2-60-f1d494
+
+package  build
+import mill._, scalalib._
+
+object solitude extends Module:
+    object cli extends SolitudeScalaModule:
+        def mvnDeps = Seq(Deps.com.outr.scribe)
+
+    object hosting extends SolitudeScalaModule
+end solitude
+
+trait SolitudeScalaModule extends ScalaModule:
+    def scalaVersion = "3.7.1"
+    def scalacOptions = super.scalacOptions() ++ Seq(
+        "-deprecation",
+        "-feature",
+        "-unchecked",
+        "-Xlint") 

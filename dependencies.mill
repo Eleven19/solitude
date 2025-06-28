@@ -1,0 +1,20 @@
+package build
+
+import mill._, scalalib._
+
+object Deps:
+    import Versions.Libs as LV
+    import Versions.Scala as SV
+
+    object com:
+        object outr:
+            val scribe = mvn"com.outr::scribe::${LV.scribe}"
+    object org  
+
+object Versions:
+    object Libs:
+        val scribe = "3.16.1"
+
+    object Scala:
+        val scala3Latest = "3.7.1"
+        val scala3LTS = "3.3.6"
