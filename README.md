@@ -1,0 +1,2 @@
+# solitude
+Sandboxed execution environment
