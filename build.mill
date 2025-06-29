@@ -1,13 +1,31 @@
 //| mill-version: 1.0.0-RC2-60-f1d494
-
+//| mill-jvm-version: graalvm-community:24
+//| mill-jvm-opts: ["-XX:+UnlockExperimentalVMOptions", "-XX:+EnableJVMCI"]
 package  build
 import mill._, scalalib._
 
 object solitude extends Module:
     object cli extends SolitudeScalaModule:
-        def mvnDeps = Seq(Deps.com.outr.scribe)
+        def forkArgs = super.forkArgs() ++ Seq(
+            "-XX:+UnlockExperimentalVMOptions",
+            "-XX:+EnableJVMCI",
+            "--enable-native-access=ALL-UNNAMED"
+            //"-Dpolyglot.engine.WarnInterpreterOnly=false"
+        )
 
-    object hosting extends SolitudeScalaModule
+        def moduleDeps = Seq(solitude.hosting)
+        def mvnDeps = super.mvnDeps() ++ Seq(
+            Deps.com.outr.scribe,
+            Deps.org.graalvm.polyglot.polyglot,
+            Deps.org.graalvm.polyglot.python
+        )
+
+    object hosting extends SolitudeScalaModule:
+        def mvnDeps = super.mvnDeps() ++ Seq(
+            Deps.com.outr.scribe,
+            Deps.org.graalvm.polyglot.polyglot,
+            Deps.org.graalvm.polyglot.python   
+        )
 end solitude
 
 trait SolitudeScalaModule extends ScalaModule:
@@ -16,4 +34,4 @@ trait SolitudeScalaModule extends ScalaModule:
         "-deprecation",
         "-feature",
         "-unchecked",
-        "-Xlint") 
+    ) 
